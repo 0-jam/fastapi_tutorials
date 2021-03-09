@@ -1,5 +1,21 @@
 # FastAPI Tutorials
 
+---
+
+1. [Environment](#environment)
+1. [Installation](#installation)
+  1. [macOS (Miniforge3)](#macos-miniforge3)
+1. [Usage](#usage)
+  1. [First Steps](#first-steps)
+  1. [Path Parameters](#path-parameters)
+
+---
+
+## Environment
+
+- macOS Big Sur 11.2.2 arm64
+- Python 3.9.2 on Miniforge3
+
 ## Installation
 
 ### macOS (Miniforge3)
@@ -12,16 +28,10 @@
 
 ## Usage
 
-Exec `% uvicorn main:app --reload` and open `http://localhost:8000`
+Exec `% uvicorn main:app --reload` to start the API server
 
-```json
-{
-    "message": "Hello world"
-}
-```
-
-Open `http://localhost:8000/docs` or `http://localhost:8000/redoc` to show auto-generated documents
-Open `http://localhost:8000/openapi.json` to OpenAPI schema
+`http://localhost:8000/docs` or `http://localhost:8000/redoc`: show auto-generated documents
+`http://localhost:8000/openapi.json`: show OpenAPI schema
 
 ```json
 {
@@ -48,4 +58,20 @@ Open `http://localhost:8000/openapi.json` to OpenAPI schema
     }
   }
 }
+```
+
+### First Steps
+
+Open `http://localhost:8000`:
+
+```json
+{"message": "Hello world"}
+```
+
+### Path Parameters
+
+Open `http://localhost:8000/items/<item_id>` (example: 2):
+
+```json
+{"item_id": 2}
 ```
