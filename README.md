@@ -164,3 +164,11 @@ Other strings such as `http://localhost:8000/models/bert` returns:
   "file_path": "/home/jam/Documents/sample.txt"
 }
 ```
+
+Windows path such as `http://localhost:8000/files/C:\Users\jam\Documents\sample.txt` is also acceptable:
+
+```json
+{
+  "file_path": "C:/Users/jam/Documents/sample.txt"
+}
+```
