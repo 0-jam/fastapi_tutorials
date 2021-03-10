@@ -12,6 +12,7 @@
     1. [Order matters](#order-matters)
     1. [Predefined values](#predefined-values)
     1. [Path parameters containing paths](#path-parameters-containing-paths)
+1. [Usage: GraphQL](#usage-graphql)
 
 ---
 
@@ -32,7 +33,7 @@
 
 ## Usage
 
-Exec `% uvicorn main:app --reload` to start the API server
+Run `% uvicorn main:app --reload` to start the API server
 
 `http://localhost:8000/docs` or `http://localhost:8000/redoc`: show auto-generated documents
 `http://localhost:8000/openapi.json`: show OpenAPI schema
@@ -170,5 +171,26 @@ Windows path such as `http://localhost:8000/files/C:\Users\jam\Documents\sample.
 ```json
 {
   "file_path": "C:/Users/jam/Documents/sample.txt"
+}
+```
+
+## Usage: GraphQL
+
+Run `% uvicorn gql:app --reload` to start the API server
+Pass `http://localhost:8000` this query:
+
+```gql
+{
+  hello(name: "jam")
+}
+```
+
+It will return:
+
+```json
+{
+  "data": {
+    "hello": "Hello jam"
+  }
 }
 ```
