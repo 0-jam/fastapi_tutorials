@@ -75,3 +75,19 @@ Open `http://localhost:8000/items/<item_id>` (example: 2):
 ```json
 {"item_id": 2}
 ```
+
+When passing wrong type as an argument, you will see:
+
+```json
+{
+  "detail": [
+    {
+      "loc": [
+        "path","item_id"
+      ],
+      "msg": "value is not a valid integer",
+      "type": "type_error.integer"
+    }
+  ]
+}
+```
