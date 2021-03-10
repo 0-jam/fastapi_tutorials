@@ -8,6 +8,10 @@
 1. [Usage](#usage)
   1. [First Steps](#first-steps)
   1. [Path Parameters](#path-parameters)
+    1. [Validation](#validation)
+    1. [Order matters](#order-matters)
+    1. [Predefined values](#predefined-values)
+    1. [Path parameters containing paths](#path-parameters-containing-paths)
 
 ---
 
@@ -76,6 +80,8 @@ Open `http://localhost:8000/items/<item_id>` (example: 2):
 {"item_id": 2}
 ```
 
+#### Validation
+
 When passing wrong type as an argument, you will see:
 
 ```json
@@ -89,5 +95,72 @@ When passing wrong type as an argument, you will see:
       "type": "type_error.integer"
     }
   ]
+}
+```
+
+#### Order matters
+
+`http://localhost:8000/users/me` always returns the current user information:
+
+```json
+{"user_id":"the current user"}
+```
+
+When passing other name such as `http://localhost:8000/users/jam`:
+
+```json
+{"user_id":"jam"}
+```
+
+#### Predefined values
+
+Acceptable parameters of `http://localhost:8000/models` are declared as `Enum` object
+`http://localhost:8000/models/alexnet` returns:
+
+```json
+{"model_name":"alexnet","message":"Deep Learning FTW!"}
+```
+
+`http://localhost:8000/models/alexnet` returns:
+
+```json
+{"model_name":"lenet","message":"LeCNN all the images"}
+```
+
+`http://localhost:8000/models/resnet` returns:
+
+```json
+{"model_name":"resnet","message":"Have some residuals"}
+```
+
+Other strings such as `http://localhost:8000/models/bert` returns:
+
+```json
+{
+  "detail": [{
+    "loc": [
+      "path",
+      "model_name"
+    ],
+    "msg": "value is not a valid enumeration member; permitted: 'alexnet', 'resnet', 'lenet'",
+    "type": "type_error.enum",
+    "ctx": {
+      "enum_values": [
+        "alexnet",
+        "resnet",
+        "lenet"
+      ]
+    }
+  }]
+}
+```
+
+#### Path parameters containing paths
+
+`http://localhost:8000/files//home/jam/Documents/sample.txt` returns:
+
+```json
+{
+  "file_path": "/home/jam/Documents/sample.txt"
 }
 ```
