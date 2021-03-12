@@ -227,13 +227,28 @@ Windows path such as `http://localhost:8000/files/C:\Users\jam\Documents\sample.
 
 #### Multiple path and query parameters
 
-`http://localhost:8000/users/2/items/foo` returns:
+`http://localhost:8000/users/2/items/foo?needy=1` returns:
 
 ```json
 {
   "item_id": "foo",
   "owner_id": 2,
+  "needy": "1",
   "description": "This is an amazing item that has a long description."
+}
+```
+
+When `needy` is missing, it returns:
+
+```json
+{
+  "detail": [
+    {
+      "loc": ["query","needy"],
+      "msg": "field required",
+      "type": "value_error.missing"
+    }
+  ]
 }
 ```
 
