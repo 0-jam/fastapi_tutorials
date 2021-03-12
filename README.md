@@ -15,6 +15,8 @@
   1. [Query Parameters](#query-parameters)
     1. [Multiple path and query parameters](#multiple-path-and-query-parameters)
 1. [Usage: GraphQL](#usage-graphql)
+1. [Usage: Models](#usage-models)
+  1. [Request body](#request-body)
 
 ---
 
@@ -270,5 +272,54 @@ It will return:
   "data": {
     "hello": "Hello jam"
   }
+}
+```
+
+## Usage: Models
+
+Run `% uvicorn models:app --reload` to start the API server
+
+### Request body
+
+Post `http://localhost:8000/items` this JSON:
+
+```json
+{
+  "name": "sample",
+  "description": "my first item",
+  "price": 100,
+  "tax": 8
+}
+```
+
+It will return created model with the calculated price with tax:
+
+```json
+{
+  "name": "sample",
+  "description": "my first item",
+  "price": 100.0,
+  "tax": 8.0,
+  "price_with_tax": 108.0
+}
+```
+
+Attributes `description` and `tax` are nullable:
+
+```json
+{
+  "name": "sample",
+  "price": 100
+}
+```
+
+...and will not calculate price with tax:
+
+```json
+{
+  "name": "sample",
+  "description": null,
+  "price": 100.0,
+  "tax": null
 }
 ```
