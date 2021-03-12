@@ -1,5 +1,6 @@
-from fastapi import FastAPI
 from enum import Enum
+
+from fastapi import FastAPI
 
 
 # Set acceptable values as the subclass of str and Enum
@@ -25,6 +26,20 @@ async def root():
 @app.get('/items/{item_id}')
 async def read_item(item_id: int):
     return {'item_id': item_id}
+
+
+fake_item_db = [
+    {'item_name': 'foo'},
+    {'item_name': 'bar'},
+    {'item_name': 'baz'},
+]
+
+
+# Declare query parameters with default values
+# Going to /items/ is the same as going to /items/?skip=0&limit=10
+@app.get('/item_names/')
+async def read_item_names(skip: int = 0, limit: int = 10):
+    return fake_item_db[skip: skip + limit]
 
 
 # A fixed path example
