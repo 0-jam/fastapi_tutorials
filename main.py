@@ -25,11 +25,18 @@ async def root():
 
 # Pass 'item_id' as arguments of the function
 @app.get('/items/{item_id}')
-async def read_item(item_id: int, q: Optional[str] = None):
-    if q:
-        return {'item_id': item_id, q: q}
+async def read_item(item_id: int, q: Optional[str] = None, short: bool = False):
+    item = {'item_id': item_id}
 
-    return {'item_id': item_id}
+    if q:
+        item.update({'q': q})
+
+    if not short:
+        item.update(
+            {'description': 'This is an amazing item that has a long description.'}
+        )
+
+    return item
 
 
 fake_item_db = [
