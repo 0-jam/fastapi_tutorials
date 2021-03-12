@@ -12,6 +12,8 @@
     1. [Order matters](#order-matters)
     1. [Predefined values](#predefined-values)
     1. [Path parameters containing paths](#path-parameters-containing-paths)
+  1. [Query Parameters](#query-parameters)
+    1. [Multiple path and query parameters](#multiple-path-and-query-parameters)
 1. [Usage: GraphQL](#usage-graphql)
 
 ---
@@ -25,10 +27,23 @@
 
 ### macOS (Miniforge3)
 
+- Initialize Conda environment
+
 ```
 % conda create -n fastapi-tutorials python
 % conda activate fastapi-tutorials
+```
+
+- Basic packages
+
+```
 % conda install flake8 autopep8 fastapi uvicorn
+```
+
+- Used by GraphQL
+
+```
+% conda install graphene
 ```
 
 ## Usage
@@ -76,6 +91,31 @@ Open `http://localhost:8000`:
 ### Path Parameters
 
 Open `http://localhost:8000/items/<item_id>` (example: 2):
+
+```json
+{
+  "item_id": 2,
+  "description": "This is an amazing item that has a long description."
+}
+```
+
+Pass an optional parameter `http://localhost:8000/items/2?q=foo`:
+
+```json
+{
+  "item_id": 2,
+  "q": "foo",
+  "description": "This is an amazing item that has a long description."
+}
+```
+
+Add `short=true` to skip the description `http://localhost:8000/items/2?short=true`:
+Acceptable values (case insensitive) are:
+
+- `true`
+- `1`
+- `on`
+- `yes`
 
 ```json
 {"item_id": 2}
@@ -171,6 +211,29 @@ Windows path such as `http://localhost:8000/files/C:\Users\jam\Documents\sample.
 ```json
 {
   "file_path": "C:/Users/jam/Documents/sample.txt"
+}
+```
+
+### Query Parameters
+
+`http://localhost:8000/item_names/?skip=1&limiit=1` returns:
+
+```json
+[
+  {"item_name": "bar"},
+  {"item_name": "baz"}
+]
+```
+
+#### Multiple path and query parameters
+
+`http://localhost:8000/users/2/items/foo` returns:
+
+```json
+{
+  "item_id": "foo",
+  "owner_id": 2,
+  "description": "This is an amazing item that has a long description."
 }
 ```
 
