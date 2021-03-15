@@ -1,10 +1,13 @@
 # FastAPI Tutorials
 
+[https://fastapi.tiangolo.com/](https://fastapi.tiangolo.com/)
+
 ---
 
 1. [Environment](#environment)
 1. [Installation](#installation)
   1. [macOS (Miniforge3)](#macos-miniforge3)
+  1. [Windows (WSL2 + pyenv + pipenv)](#windows-wsl2--pyenv--pipenv)
 1. [Usage](#usage)
   1. [First Steps](#first-steps)
   1. [Path Parameters](#path-parameters)
@@ -23,7 +26,8 @@
 ## Environment
 
 - macOS Big Sur 11.2.2 arm64
-- Python 3.9.2 on Miniforge3
+- Ubuntu 20.04 on WSL 2
+- Python 3.9.2 on Miniforge3 / pyenv
 
 ## Installation
 
@@ -46,6 +50,27 @@
 
 ```
 % conda install graphene
+```
+
+### Windows (WSL2 + pyenv + pipenv)
+
+- Initialize Pipenv environment
+
+```
+$ pipenv --python $(which python)
+```
+
+- Basic packages
+
+```
+$ pipenv install --dev flake8 autopep8
+$ pipenv install fastapi uvicorn
+```
+
+- Used by GraphQL
+
+```
+$ pipenv install graphene
 ```
 
 ## Usage
