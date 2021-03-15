@@ -6,20 +6,26 @@
 
 1. [Environment](#environment)
 1. [Installation](#installation)
-  1. [macOS (Miniforge3)](#macos-miniforge3)
-  1. [Windows (WSL2 + pyenv + pipenv)](#windows-wsl2--pyenv--pipenv)
+    1. [macOS (Miniforge3)](#macos-miniforge3)
+    1. [Windows (WSL2 + pyenv + pipenv)](#windows-wsl2--pyenv--pipenv)
 1. [Usage](#usage)
-  1. [First Steps](#first-steps)
-  1. [Path Parameters](#path-parameters)
-    1. [Validation](#validation)
-    1. [Order matters](#order-matters)
-    1. [Predefined values](#predefined-values)
-    1. [Path parameters containing paths](#path-parameters-containing-paths)
-  1. [Query Parameters](#query-parameters)
-    1. [Multiple path and query parameters](#multiple-path-and-query-parameters)
+    1. [First Steps](#first-steps)
+    1. [Path Parameters](#path-parameters)
+        1. [Validation](#validation)
+        1. [Order matters](#order-matters)
+        1. [Predefined values](#predefined-values)
+        1. [Path parameters containing paths](#path-parameters-containing-paths)
+    1. [Query Parameters](#query-parameters)
+        1. [Multiple path and query parameters](#multiple-path-and-query-parameters)
 1. [Usage: GraphQL](#usage-graphql)
 1. [Usage: Models](#usage-models)
-  1. [Request body](#request-body)
+    1. [Request body](#request-body)
+1. [Usage: SQL Databases](#usage-sql-databases)
+    1. [Create user](#create-user)
+    1. [Read users](#read-users)
+    1. [Read single user](#read-single-user)
+    1. [Create an item for the specfied user](#create-an-item-for-the-specfied-user)
+    1. [Read items](#read-items)
 
 ---
 
@@ -347,4 +353,107 @@ Attributes `description` and `tax` are nullable:
   "price": 100.0,
   "tax": null
 }
+```
+
+## Usage: SQL Databases
+
+Run `% uvicorn sql_app.main:app --reload` to start the API server
+
+### Create user
+
+Post `http://localhost:8000/users`:
+
+```json
+{
+  "email": "sample@example.com",
+  "password": "password"
+}
+```
+
+It will return created `User`:
+
+```json
+{
+  "email": "sample@example.com",
+  "id": 1,
+  "is_active": true,
+  "items": []
+}
+```
+
+### Read users
+
+Get `http://localhost:8000/users` then it will returns a list of created users:
+
+```json
+[
+  {
+    "email": "sample@example.com",
+    "id": 1,
+    "is_active": true,
+    "items": []
+  },
+  {
+    "email": "sample2@example.com",
+    "id": 2,
+    "is_active": true,
+    "items": []
+  }
+]
+```
+
+### Read single user
+
+Get `http://localhost:8000/users/1` then it will returns the user specified by its ID:
+
+```json
+{
+  "email": "sample@example.com",
+  "id": 1,
+  "is_active": true,
+  "items": []
+}
+```
+
+### Create an item for the specfied user
+
+Post `http://localhost:8000/users/1/items`:
+
+```json
+{
+  "title": "sample item",
+  "description": "my first item"
+}
+```
+
+It will returns the created `Item` associated with the specified user:
+
+```json
+{
+  "title": "sample item",
+  "description": "my first item",
+  "id": 1,
+  "owner_id": 1
+}
+```
+
+### Read items
+
+Get `http://localhost:8000/items` then it will returns a list of created items:
+
+```json
+[
+  {
+    "title": "sample item",
+    "description": "my first item",
+    "id": 1,
+    "owner_id": 1
+  },
+  {
+    "title": "sample item 2",
+    "description": "second user's item",
+    "id": 2,
+    "owner_id": 2
+  }
+]
 ```
