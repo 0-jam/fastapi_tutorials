@@ -31,7 +31,7 @@
 
 ## Environment
 
-- macOS Big Sur 11.2.2 arm64
+- macOS Big Sur 11.2.3 arm64
 - Ubuntu 20.04 on WSL 2
 - Python 3.9.2 on Miniforge3 / pyenv
 
@@ -58,6 +58,12 @@
 % conda install graphene
 ```
 
+- Used by SQL database
+
+```
+$ conda install sqlalchemy
+```
+
 ### Windows (WSL2 + pyenv + pipenv)
 
 - Initialize Pipenv environment
@@ -77,6 +83,12 @@ $ pipenv install fastapi uvicorn
 
 ```
 $ pipenv install graphene
+```
+
+- Used by SQL database
+
+```
+$ pipenv install sqlalchemy
 ```
 
 ## Usage
