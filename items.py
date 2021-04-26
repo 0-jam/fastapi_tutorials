@@ -31,8 +31,9 @@ async def read_items(
 
 
 # Recieve the parameter 'q' which accepts only the fixed value ('fixedquery') using reqular expressions
+# This query is marked as deprecated (can be shown on documents)
 @app.get('/items_fixed/')
-async def read_items_fixed(q: Optional[str] = Query(None, min_length=3, max_length=50, regex='^fixedquery$')):
+async def read_items_fixed(q: Optional[str] = Query(None, min_length=3, max_length=50, regex='^fixedquery$', deprecated=True)):
     results = {'items': [
         {'item_id': 'Foo'},
         {'item_id': 'Bar'},
