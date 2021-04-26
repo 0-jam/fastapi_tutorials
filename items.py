@@ -16,6 +16,7 @@ async def read_items(
         # 'description' can be shown in the document
         title='Query String',
         description='Query string for the items',
+        alias='item-query',
     )
 ):
     results = {'items': [
