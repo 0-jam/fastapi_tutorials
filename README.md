@@ -17,6 +17,10 @@
         1. [Path parameters containing paths](#path-parameters-containing-paths)
     1. [Query Parameters](#query-parameters)
         1. [Multiple path and query parameters](#multiple-path-and-query-parameters)
+    1. [Query parameters with validations](#query-parameters-with-validations)
+        1. [String validations](#string-validations)
+        1. [With required parameters](#with-required-parameters)
+        1. [With fixed parameters](#with-fixed-parameters)
 1. [Usage: GraphQL](#usage-graphql)
 1. [Usage: Models](#usage-models)
     1. [Request body](#request-body)
@@ -261,7 +265,7 @@ Windows path such as `http://localhost:8000/files/C:\Users\jam\Documents\sample.
 
 ### Query Parameters
 
-`http://localhost:8000/item_names/?skip=1&limiit=1` returns:
+`http://localhost:8000/item_names/?skip=1&limit=1` returns:
 
 ```json
 [
@@ -292,6 +296,75 @@ When `needy` is missing, it returns:
       "loc": ["query","needy"],
       "msg": "field required",
       "type": "value_error.missing"
+    }
+  ]
+}
+```
+
+### Query parameters with validations
+
+Run `% uvicorn items:app --reload` to start the API server
+
+#### String validations
+
+`http://localhost:8000/items?q=Baz` returns:
+
+```json
+{
+  "items": [
+    {
+      "item_id": "Foo"
+    },
+    {
+      "item_id": "Bar"
+    }
+  ],
+  "q": "Baz"
+}
+```
+
+#### With required parameters
+
+`http://localhost:8000/items_required` returns:
+
+(Which tells params `q` is missing)
+
+```json
+{
+  "detail": [
+    {
+      "loc": [
+        "query",
+        "q"
+      ],
+      "msg": "field required",
+      "type": "value_error.missing"
+    }
+  ]
+}
+```
+
+`http://localhost:8000/items_required?q=Baz` works the same as [above](#string-validations)
+
+#### With fixed parameters
+
+`http://localhost:8000/items_fixed?q=Baz` returns:
+
+(Which only accepts `fixedquery` as the parameter `q`)
+
+```json
+{
+  "detail": [
+    {
+      "loc": [
+        "query",
+        "q"
+      ],
+      "msg": "string does not match regex \"^fixedquery$\"",
+      "type": "value_error.str.regex",
+      "ctx": {
+        "pattern": "^fixedquery$"
+      }
     }
   ]
 }
