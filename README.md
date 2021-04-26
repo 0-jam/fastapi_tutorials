@@ -309,6 +309,8 @@ Run `% uvicorn items:app --reload` to start the API server
 
 `http://localhost:8000/items?q=Baz` returns:
 
+parameter `q` can be replaced with `item-query`
+
 ```json
 {
   "items": [
