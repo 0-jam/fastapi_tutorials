@@ -17,6 +17,10 @@
         1. [Path parameters containing paths](#path-parameters-containing-paths)
     1. [Query Parameters](#query-parameters)
         1. [Multiple path and query parameters](#multiple-path-and-query-parameters)
+    1. [Query parameters with validations](#query-parameters-with-validations)
+        1. [Limit the number of characters](#limit-the-number-of-characters)
+        1. [With required parameters](#with-required-parameters)
+        1. [With fixed parameters](#with-fixed-parameters)
 1. [Usage: GraphQL](#usage-graphql)
 1. [Usage: Models](#usage-models)
     1. [Request body](#request-body)
@@ -261,7 +265,7 @@ Windows path such as `http://localhost:8000/files/C:\Users\jam\Documents\sample.
 
 ### Query Parameters
 
-`http://localhost:8000/item_names/?skip=1&limiit=1` returns:
+`http://localhost:8000/item_names/?skip=1&limit=1` returns:
 
 ```json
 [
@@ -292,6 +296,99 @@ When `needy` is missing, it returns:
       "loc": ["query","needy"],
       "msg": "field required",
       "type": "value_error.missing"
+    }
+  ]
+}
+```
+
+### Query parameters with validations
+
+Run `% uvicorn items:app --reload` to start the API server
+
+#### Limit the number of characters
+
+`http://localhost:8000/items?q=Baz` returns:
+
+parameter `q` can be replaced with `item-query`
+
+```json
+{
+  "items": [
+    {
+      "item_id": "Foo"
+    },
+    {
+      "item_id": "Bar"
+    }
+  ],
+  "q": "Baz"
+}
+```
+
+`http://localhost:8000/items?q=Bazbaz` fails to run and returns:
+
+(Which accepts 3-5 characters)
+
+```json
+{
+  "detail": [
+    {
+      "loc": [
+        "query",
+        "q"
+      ],
+      "msg": "ensure this value has at most 5 characters",
+      "type": "value_error.any_str.max_length",
+      "ctx": {
+        "limit_value": 5
+      }
+    }
+  ]
+}
+```
+
+#### With required parameters
+
+`http://localhost:8000/items_required` returns:
+
+(Which tells params `q` is missing)
+
+```json
+{
+  "detail": [
+    {
+      "loc": [
+        "query",
+        "q"
+      ],
+      "msg": "field required",
+      "type": "value_error.missing"
+    }
+  ]
+}
+```
+
+`http://localhost:8000/items_required?q=Baz` works the same as [above](#limit-the-number-of-characters)
+
+#### With fixed parameters
+
+`http://localhost:8000/items_fixed?q=Baz` returns:
+
+(Which only accepts `fixedquery` as the parameter `q`)
+
+```json
+{
+  "detail": [
+    {
+      "loc": [
+        "query",
+        "q"
+      ],
+      "msg": "string does not match regex \"^fixedquery$\"",
+      "type": "value_error.str.regex",
+      "ctx": {
+        "pattern": "^fixedquery$"
+      }
     }
   ]
 }
