@@ -7,7 +7,17 @@ app = FastAPI()
 
 # Recieve the parameter 'q' with the default value (None) and the limit of characters (5)
 @app.get('/items/')
-async def read_items(q: Optional[str] = Query(None, min_length=3, max_length=5)):
+async def read_items(
+    q: Optional[str] = Query(
+        None,
+        min_length=3,
+        max_length=5,
+        # Custom metadata
+        # 'description' can be shown in the document
+        title='Query String',
+        description='Query string for the items',
+    )
+):
     results = {'items': [
         {'item_id': 'Foo'},
         {'item_id': 'Bar'},
