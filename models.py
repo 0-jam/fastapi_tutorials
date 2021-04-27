@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Path
 from pydantic import BaseModel
 
 
@@ -25,3 +25,22 @@ async def create_item(item: Item):
         item_dict.update({'price_with_tax': price_with_tax})
 
     return item_dict
+
+
+# Mixed Path, Query and body parameters
+@app.put('/items/{item_id}')
+async def update_item(
+    *,
+    item_id: int = Path(..., title='The ID of the item to get', ge=0, le=100),
+    q: Optional[str] = None,
+    item: Optional[Item] = None,
+):
+    results = {'item_id': item_id}
+
+    if q:
+        results.update({'q': q})
+
+    if item:
+        results.update({'item': item})
+
+    return results
