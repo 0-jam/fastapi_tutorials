@@ -24,6 +24,7 @@
 1. [Usage: GraphQL](#usage-graphql)
 1. [Usage: Models](#usage-models)
     1. [Request body](#request-body)
+    1. [Pass multiple parameters](#pass-multiple-parameters)
 1. [Usage: SQL Databases](#usage-sql-databases)
     1. [Create user](#create-user)
     1. [Read users](#read-users)
@@ -485,6 +486,47 @@ Attributes `description` and `tax` are nullable:
   "description": null,
   "price": 100.0,
   "tax": null
+}
+```
+
+### Pass multiple parameters
+
+`http://localhost:8000/items/3?q=foo` with this JSON:
+
+```json
+{
+    "item": {
+        "name": "sample",
+        "price": 100,
+        "description": "A sample item"
+    },
+    "user": {
+        "name": "0-jam",
+        "full_name": "aozamemaou"
+    },
+    "importance": 3
+}
+```
+
+It returns:
+
+```json
+{
+  // Passed as parameters
+  "item_id": 3,
+  "q": "foo",
+  // Passed as JSON
+  "item": {
+    "name": "sample",
+    "description": "A sample item",
+    "price": 100.0,
+    "tax": 0.1
+  },
+  "user": {
+    "name": "0-jam",
+    "full_name": "aozamemaou"
+  },
+  "importance": 3
 }
 ```
 
