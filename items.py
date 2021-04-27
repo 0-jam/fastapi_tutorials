@@ -62,7 +62,11 @@ async def read_items_required(q: str = Query(..., min_length=3, max_length=5)):
 @app.get('/items/{item_id}')
 async def read_item(
     # Pass parameters as keyword arguments
-    # Both item_id and q are required
+    # All parameters are required
+    # gt: greater than
+    # lt: less than
+    # ge: greater than or equal
+    # le: less than or equal
     *,
     item_id: int = Path(
         ...,
@@ -71,8 +75,9 @@ async def read_item(
         lt=100,
     ),
     q: str,
+    size: float = Query(..., gt=0, le=10.5),
 ):
-    results = {'item_id': item_id}
+    results = {'item_id': item_id, 'size': size}
 
     if q:
         results.update({'q': q})
