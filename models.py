@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import FastAPI, Path
+from fastapi import FastAPI, Path, Body
 from pydantic import BaseModel
 
 
@@ -40,6 +40,7 @@ async def update_item(
     q: Optional[str] = None,
     item: Optional[Item] = None,
     user: Optional[User] = None,
+    importance: int = Body(5)
 ):
     results = {'item_id': item_id}
 
@@ -47,6 +48,6 @@ async def update_item(
         results.update({'q': q})
 
     if item:
-        results.update({'item': item, 'user': user})
+        results.update({'item': item, 'user': user, 'importance': importance})
 
     return results
