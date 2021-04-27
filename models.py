@@ -40,7 +40,7 @@ async def update_item(
     q: Optional[str] = None,
     item: Optional[Item] = None,
     user: Optional[User] = None,
-    importance: int = Body(5)
+    importance: int = Body(5, gt=0)
 ):
     results = {'item_id': item_id}
 
