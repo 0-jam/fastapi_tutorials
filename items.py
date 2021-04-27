@@ -1,6 +1,6 @@
 from typing import Optional
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Path, Query
 
 app = FastAPI()
 
@@ -52,6 +52,27 @@ async def read_items_required(q: str = Query(..., min_length=3, max_length=5)):
         {'item_id': 'Foo'},
         {'item_id': 'Bar'},
     ]}
+
+    if q:
+        results.update({'q': q})
+
+    return results
+
+
+@app.get('/items/{item_id}')
+async def read_item(
+    # Pass parameters as keyword arguments
+    # Both item_id and q are required
+    *,
+    item_id: int = Path(
+        ...,
+        title='The ID of the item to get',
+        ge=1,
+        lt=100,
+    ),
+    q: str,
+):
+    results = {'item_id': item_id}
 
     if q:
         results.update({'q': q})
