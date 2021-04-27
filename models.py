@@ -38,7 +38,8 @@ async def update_item(
     *,
     item_id: int = Path(..., title='The ID of the item to get', ge=0, le=100),
     q: Optional[str] = None,
-    item: Optional[Item] = None,
+    # Both item and user has the same way to pass
+    item: Item = Body(..., embed=True),
     user: Optional[User] = None,
     importance: int = Body(5, gt=0)
 ):
