@@ -6,8 +6,7 @@
 
 1. [Environment](#environment)
 1. [Installation](#installation)
-    1. [macOS (Miniforge3)](#macos-miniforge3)
-    1. [Windows (WSL2 + pyenv + pipenv)](#windows-wsl2--pyenv--pipenv)
+    1. [Using pyenv](#using-pyenv)
 1. [Usage](#usage)
     1. [First Steps](#first-steps)
     1. [Path Parameters](#path-parameters)
@@ -21,6 +20,7 @@
         1. [Limit the number of characters](#limit-the-number-of-characters)
         1. [With required parameters](#with-required-parameters)
         1. [With fixed parameters](#with-fixed-parameters)
+        1. [Number validations](#number-validations)
 1. [Usage: GraphQL](#usage-graphql)
 1. [Usage: Models](#usage-models)
     1. [Request body](#request-body)
@@ -35,40 +35,13 @@
 
 ## Environment
 
-- macOS Big Sur 11.2.3 arm64
+- macOS Big Sur 11.4 arm64
 - Ubuntu 20.04 on WSL 2
-- Python 3.9.2 on Miniforge3 / pyenv
+- Python 3.9.4 on pyenv
 
 ## Installation
 
-### macOS (Miniforge3)
-
-- Initialize Conda environment
-
-```
-% conda create -n fastapi-tutorials python
-% conda activate fastapi-tutorials
-```
-
-- Basic packages
-
-```
-% conda install flake8 autopep8 fastapi uvicorn
-```
-
-- Used by GraphQL
-
-```
-% conda install graphene
-```
-
-- Used by SQL database
-
-```
-$ conda install sqlalchemy
-```
-
-### Windows (WSL2 + pyenv + pipenv)
+### Using pyenv
 
 - Initialize Pipenv environment
 
@@ -388,6 +361,57 @@ parameter `q` can be replaced with `item-query`
       "type": "value_error.str.regex",
       "ctx": {
         "pattern": "^fixedquery$"
+      }
+    }
+  ]
+}
+```
+
+#### Number validations
+
+`http://localhost:8000/items/10?q=foo&size=1` returns:
+
+```json
+{
+  "item_id": 10,
+  "size": 1.0,
+  "q": "foo"
+}
+```
+
+`http://localhost:8000/items/111?size=11` fails to run and returns:
+
+```json
+{
+  "detail": [
+    {
+      "loc": [
+        "path",
+        "item_id"
+      ],
+      "msg": "ensure this value is less than 100",
+      "type": "value_error.number.not_lt",
+      "ctx": {
+        "limit_value": 100
+      }
+    },
+    {
+      "loc": [
+        "query",
+        "q"
+      ],
+      "msg": "field required",
+      "type": "value_error.missing"
+    },
+    {
+      "loc": [
+        "query",
+        "size"
+      ],
+      "msg": "ensure this value is less than or equal to 10.5",
+      "type": "value_error.number.not_le",
+      "ctx": {
+        "limit_value": 10.5
       }
     }
   ]
