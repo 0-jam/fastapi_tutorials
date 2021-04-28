@@ -1,14 +1,22 @@
 from typing import Optional
 
 from fastapi import FastAPI, Path, Body
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 # Create the data model with default values
 class Item(BaseModel):
     name: str
-    description: Optional[str] = None
-    price: float
+    description: Optional[str] = Field(
+        None,
+        title="The description of the item",
+        max_length=300
+    )
+    price: float = Field(
+        ...,
+        gt=0,
+        description="The price of the item (must be greater than zero)",
+    )
     tax: Optional[float] = 0.1
 
 
