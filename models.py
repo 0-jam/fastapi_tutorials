@@ -1,4 +1,4 @@
-from typing import Optional, Set
+from typing import Optional, Set, List
 
 from fastapi import Body, FastAPI, Path
 from pydantic import BaseModel, Field, HttpUrl
@@ -29,6 +29,13 @@ class Item(BaseModel):
     tags: Set[str] = []
     # Use the submodel as a type
     image: Optional[Image] = None
+
+
+class Offer(BaseModel):
+    name: str
+    description: Optional[str] = None
+    total_price: float
+    items: List[Item]
 
 
 class User(BaseModel):
@@ -71,3 +78,8 @@ async def update_item(
         results.update({'item': item, 'user': user, 'importance': importance})
 
     return results
+
+
+@app.post('/offers/')
+async def create_offer(offer: Offer):
+    return offer
