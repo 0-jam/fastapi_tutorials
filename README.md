@@ -507,20 +507,28 @@ Attributes `description` and `tax` are nullable:
 
 ### Pass multiple parameters
 
-`http://localhost:8000/items/3?q=foo` with this JSON:
+Put `http://localhost:8000/items/3?q=foo` with this JSON:
 
 ```json
 {
-    "item": {
-        "name": "sample",
-        "price": 100,
-        "description": "A sample item"
-    },
-    "user": {
-        "name": "0-jam",
-        "full_name": "aozamemaou"
-    },
-    "importance": 3
+  "item": {
+    "name": "sample",
+    "price": 100,
+    "description": "A sample item",
+    "tags": [
+      "genre1",
+      "subgenre2"
+    ],
+    "image": {
+      "url": "http://example.com/sample.jpg",
+      "name": "sample image"
+    }
+  },
+  "user": {
+    "name": "0-jam",
+    "full_name": "aozamemaou"
+  },
+  "importance": 3
 }
 ```
 
@@ -528,15 +536,21 @@ It returns:
 
 ```json
 {
-  // Passed as parameters
   "item_id": 3,
   "q": "foo",
-  // Passed as JSON
   "item": {
     "name": "sample",
     "description": "A sample item",
     "price": 100.0,
-    "tax": 0.1
+    "tax": 0.1,
+    "tags": [
+      "subgenre2",
+      "genre1"
+    ],
+    "image": {
+      "url": "http://example.com/sample.jpg",
+      "name": "sample image"
+    }
   },
   "user": {
     "name": "0-jam",
