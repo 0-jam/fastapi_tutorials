@@ -451,9 +451,17 @@ Post `http://localhost:8000/items` this JSON:
 ```json
 {
   "name": "sample",
-  "description": "my first item",
   "price": 100,
-  "tax": 8
+  "tax": 0.5,
+  "description": "A sample item",
+  "tags": [
+    "genre1",
+    "subgenre2"
+  ],
+  "image": {
+    "url": "http://example.com/sample.jpg",
+    "name": "sample image"
+  }
 }
 ```
 
@@ -462,10 +470,18 @@ It will return created model with the calculated price with tax:
 ```json
 {
   "name": "sample",
-  "description": "my first item",
+  "description": "A sample item",
   "price": 100.0,
-  "tax": 8.0,
-  "price_with_tax": 108.0
+  "tax": 0.5,
+  "tags": [
+    "subgenre2",
+    "genre1"
+  ],
+  "image": {
+    "url": "http://example.com/sample.jpg",
+    "name": "sample image"
+  },
+  "price_with_tax": 100.5
 }
 ```
 
