@@ -1,7 +1,14 @@
-from typing import Optional
+from typing import Optional, Set
 
-from fastapi import FastAPI, Path, Body
-from pydantic import BaseModel, Field
+from fastapi import Body, FastAPI, Path
+from pydantic import BaseModel, Field, HttpUrl
+
+
+# Submodel for Item
+class Image(BaseModel):
+    # String includes HTTP URL validations
+    url: HttpUrl
+    name: str
 
 
 # Create the data model with default values
@@ -10,7 +17,7 @@ class Item(BaseModel):
     description: Optional[str] = Field(
         None,
         title="The description of the item",
-        max_length=300
+        max_length=300,
     )
     price: float = Field(
         ...,
@@ -18,6 +25,10 @@ class Item(BaseModel):
         description="The price of the item (must be greater than zero)",
     )
     tax: Optional[float] = 0.1
+    # Type parameters
+    tags: Set[str] = []
+    # Use the submodel as a type
+    image: Optional[Image] = None
 
 
 class User(BaseModel):
@@ -49,7 +60,7 @@ async def update_item(
     # Both item and user has the same way to pass
     item: Item = Body(..., embed=True),
     user: Optional[User] = None,
-    importance: int = Body(5, gt=0)
+    importance: int = Body(5, gt=0),
 ):
     results = {'item_id': item_id}
 
